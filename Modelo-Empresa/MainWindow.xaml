@@ -1,0 +1,14 @@
+﻿<Window x:Class="Modelo_Empresa.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Modelo_Empresa"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="396">
+    <Grid>
+        <Button Content="Funcionários" Command="{Binding AbrirFuncionariosCommand}" HorizontalAlignment="Center" Margin="0,131,0,0" VerticalAlignment="Top" Height="44" Width="122"/>
+        <Button Content="Projetos" Command="{Binding AbrirProjetosCommand}" HorizontalAlignment="Center" Margin="0,256,0,0" VerticalAlignment="Top" Height="44" Width="122"/>
+
+    </Grid>
+</Window>
