@@ -1,4 +1,5 @@
-﻿using Modelo_Empresa.ViewModels;
+﻿using Modelo_Empresa.DataContext;
+using Modelo_Empresa.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,6 @@ namespace Modelo_Empresa.Views
         public FuncionarioV()
         {
             InitializeComponent();
-            DataContext = new MainWindowVM();
         }
     }
 }
