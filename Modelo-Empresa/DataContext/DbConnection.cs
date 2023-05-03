@@ -9,7 +9,7 @@ namespace Modelo_Empresa.DataContext
 {
     public class DbConnection
     {
-        private static string sqlServerConnection = "Data Source=localhost; Initial Catalog=MeuBancoDeDados; Integrated Security=True;";
+        private static string sqlServerConnection = "Data Source=localhost; Initial Catalog=Modelo-empresa; Integrated Security=True;";
         public static SqlConnection SqlServerConnection = new SqlConnection(sqlServerConnection);
     }
 }

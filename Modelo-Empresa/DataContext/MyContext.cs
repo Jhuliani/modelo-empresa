@@ -19,9 +19,11 @@ namespace Modelo_Empresa.DataContext
             optionsBuilder.UseSqlServer(DbConnection.SqlServerConnection);
         }
 
+
+
         public void AdicionarFuncionario(FuncionarioModel funcionario)
         {
-            string sql = "INSERT INTO Funcionarios (Nome, Salario, Departamento, Projeto1, Projeto2) " +
+            string sql = "INSERT INTO FuncionarioModel (nomefunc, salario, departamento, projeto1, projeto2) " +
                          "VALUES (@nome, @salario, @departamento, @projeto1, @projeto2)";
             List<object> parametros = new List<object>();
             parametros.Add(funcionario.Nome);
@@ -35,9 +37,9 @@ namespace Modelo_Empresa.DataContext
 
         public bool UpdateFuncionario(FuncionarioModel funcionario)
         {
-            string sql = "UPDATE Funcionarios " +
-                "SET Nome = @NovoNome, Salario = @Salario, Departamento = @Departamento, Projeto1 = @Projeto1, Projeto2 = @Projeto2 " +
-                "WHERE Nome = @Nome";
+            string sql = "UPDATE FuncionarioModel " +
+                "SET nomefunc = @NovoNome, salario = @Salario, departamento = @Departamento, projeto1 = @Projeto1, projeto2 = @Projeto2 " +
+                "WHERE nomefunc = @Nome";
 
             try
             {
@@ -62,13 +64,13 @@ namespace Modelo_Empresa.DataContext
 
         public void RemoverFuncionario(string nome)
         {
-            string sql = "DELETE FROM Funcionarios WHERE Nome = @nome";
+            string sql = "DELETE FROM FuncionarioModel WHERE nomefunc = @nome";
             this.Database.ExecuteSqlRaw(sql, new SqlParameter("@nome", nome));
         }
 
         public void AdicionarProjeto(ProjetoModel projeto)
         {
-            string sql = "INSERT INTO Projetos (Nome, DataInicio, DataFim, Obs) " +
+            string sql = "INSERT INTO ProjetoModel (nomeproj, dataInicio, dataFim, observacao) " +
                          "VALUES (@nome, @dataInicio, @dataFim, @obs)";
             List<object> parametros = new List<object>();
             parametros.Add(projeto.Nome);
@@ -81,18 +83,18 @@ namespace Modelo_Empresa.DataContext
 
         public bool UpdateProjeto(ProjetoModel projeto)
         {
-            string sql = "UPDATE Projetos " +
-                "SET Nome = @Nome, DataInicio = @DataInicio, DataFim = @DataFim, Obs = @Obs " +
-                "WHERE Id = @Id";
+            string sql = "UPDATE ProjetoModel " +
+                "SET nomeproj = @nome, dataInicio = @dataInicio, dataFim = @dataFim, observacao = @Obs " +
+                "WHERE nomeproj = @nome";
 
             try
             {
                 using (var command = this.Database.GetDbConnection().CreateCommand())
                 {
                     command.CommandText = sql;
-                    command.Parameters.Add(new SqlParameter("@Nome", projeto.Nome));
-                    command.Parameters.Add(new SqlParameter("@DataInicio", projeto.DataInicio));
-                    command.Parameters.Add(new SqlParameter("@DataFim", projeto.DataFim));
+                    command.Parameters.Add(new SqlParameter("@NovoNome", projeto.Nome));
+                    command.Parameters.Add(new SqlParameter("@dataInicio", projeto.DataInicio));
+                    command.Parameters.Add(new SqlParameter("@dataFim", projeto.DataFim));
                     command.Parameters.Add(new SqlParameter("@Obs", projeto.Observacao));
 
                     this.Database.OpenConnection();
@@ -108,7 +110,7 @@ namespace Modelo_Empresa.DataContext
 
         public void RemoverProjeto(string nome)
         {
-            string sql = "DELETE FROM Projetos WHERE Nome = @nome";
+            string sql = "DELETE FROM ProjetoModel WHERE nomeproj = @nome";
             this.Database.ExecuteSqlRaw(sql, new SqlParameter("@nome", nome));
         }
     }

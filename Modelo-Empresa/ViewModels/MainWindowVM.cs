@@ -44,7 +44,10 @@ namespace Modelo_Empresa.ViewModels
             _funcionarioService = funcionarioService;
             _projetoService = projetoService;
             AbrirProjetosCommand = new RelayCommand(AbrirProjetos);
+            AbrirFuncionariosCommand = new RelayCommand(AbrirFuncionarios);
             InicializarFuncionarioCommands();
+            InicializarProjetosCommands();
+            CarregarDadosFuncionarios();
         }
 
         public void InicializarFuncionarioCommands()
@@ -52,11 +55,11 @@ namespace Modelo_Empresa.ViewModels
             AdicionarFuncionario = new RelayCommand((object _) =>
             {
                 FuncionarioModel novoFuncionario = new FuncionarioModel();
-                FuncionarioV projetoWindow = new FuncionarioV();
-                projetoWindow.DataContext = novoFuncionario;
-                bool? resultadoDialog = projetoWindow.ShowDialog();
-                if (resultadoDialog.HasValue && resultadoDialog.Value == true)
-                {
+               // FuncionarioV projetoWindow = new FuncionarioV();
+               // projetoWindow.DataContext = novoFuncionario;
+               // bool? resultadoDialog = projetoWindow.ShowDialog();
+               // if (resultadoDialog.HasValue && resultadoDialog.Value == true)
+               // {
                     try
                     {
                         _funcionarioService.AdicionarFuncionario(novoFuncionario.Nome, novoFuncionario.Salario, novoFuncionario.Departamento, novoFuncionario.Projeto1, novoFuncionario.Projeto2);
@@ -70,7 +73,7 @@ namespace Modelo_Empresa.ViewModels
                         MessageBox.Show("Erro ao inserir Funcionário \n"
                         + ex.Message);
                     }
-                }
+              //  }
             });
 
             RemoverFuncionario = new RelayCommand((object _) =>
@@ -200,7 +203,16 @@ namespace Modelo_Empresa.ViewModels
             projetoWindow.ShowDialog();
         }
 
+        private void CarregarDadosFuncionarios()
+        {
 
+            var dados = _funcionarioService.ListarFuncionarios();
+            foreach (var dado in dados)
+            {
+                listaFuncionarios.Add(dado);
+            }
+            
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void Notifica(String propertyName )
