@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,6 +27,7 @@ namespace Modelo_Empresa.Models
             _observacao = obs;
         }
 
+        [Key]
         public string Nome
         {
             get { return _nome; }
