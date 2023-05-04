@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="ProjetoV" Height="450" Width="800">
     <Grid>
-        <ListView ItemsSource="{Binding listaProjetos}" SelectedValue="{Binding SelectedProjeto}" Margin="57,47,57,217">
+        <ListView ItemsSource="{Binding listaProjetos}" SelectedValue="{Binding ProjetoSelecionado}" Margin="57,47,57,217">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Nome Projeto" DisplayMemberBinding="{Binding Nome}"/>

@@ -27,7 +27,7 @@ namespace Modelo_Empresa.Models
             _observacao = obs;
         }
 
-        [Key]
+        
         public string Nome
         {
             get { return _nome; }

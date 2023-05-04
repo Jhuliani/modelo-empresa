@@ -1,7 +1,4 @@
-﻿using Modelo_Empresa.DataContext;
-using Modelo_Empresa.DataContext.Repository;
-using Modelo_Empresa.DataContext.Service;
-using Modelo_Empresa.ViewModels;
+﻿using Modelo_Empresa.ViewModels;
 using Modelo_Empresa.Views;
 using System;
 using System.Collections.Generic;
@@ -28,12 +25,7 @@ namespace Modelo_Empresa
         public MainWindow()
         {
             InitializeComponent();
-            MyContext context = new MyContext();
-            FuncionarioRepository func = new FuncionarioRepository(context);
-            ProjetoRepository proj = new ProjetoRepository(context);
-            FuncionarioService funcionario = new FuncionarioService(func);
-            ProjetoService projeto = new ProjetoService(proj);
-            DataContext = new MainWindowVM(funcionario, projeto);
+            DataContext = new MainWindowVM();
 
         }
 

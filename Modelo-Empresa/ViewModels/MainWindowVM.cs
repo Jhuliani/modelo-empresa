@@ -1,11 +1,13 @@
-﻿using Modelo_Empresa.DataContext.Service;
+﻿using Modelo_Empresa.DataBase;
 using Modelo_Empresa.Models;
 using Modelo_Empresa.Services;
 using Modelo_Empresa.Views;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,8 +19,7 @@ namespace Modelo_Empresa.ViewModels
 {
      class MainWindowVM : INotifyPropertyChanged
      {
-        private readonly FuncionarioService _funcionarioService; 
-        private readonly ProjetoService _projetoService;
+        private readonly IDataBase _connection; 
 
         public ObservableCollection<FuncionarioModel> listaFuncionarios { get; set; }
         public ObservableCollection<ProjetoModel> listaProjetos { get; set; }
@@ -33,16 +34,16 @@ namespace Modelo_Empresa.ViewModels
         public ICommand AtualizarProjeto { get; private set; }
 
 
-        public FuncionarioModel SelectedFuncionario { get; set; }
-        public ProjetoModel SelectedProjeto { get; set; }
+        public FuncionarioModel FuncionarioSelecionado { get; set; }
+        public ProjetoModel ProjetoSelecionado { get; set; }
 
+        readonly DbConnection dbConnection = new NpgsqlConnection(ConfigurationReader.GetConnectionString("MyConnectionString"));
 
-        public MainWindowVM(FuncionarioService funcionarioService, ProjetoService projetoService)
+        public MainWindowVM()
         {
             listaFuncionarios = new ObservableCollection<FuncionarioModel>();
             listaProjetos = new ObservableCollection<ProjetoModel>();
-            _funcionarioService = funcionarioService;
-            _projetoService = projetoService;
+            _connection = new PostgresDb(dbConnection);
             AbrirProjetosCommand = new RelayCommand(AbrirProjetos);
             AbrirFuncionariosCommand = new RelayCommand(AbrirFuncionarios);
             InicializarFuncionarioCommands();
@@ -62,9 +63,9 @@ namespace Modelo_Empresa.ViewModels
                // {
                     try
                     {
-                        _funcionarioService.AdicionarFuncionario(novoFuncionario.Nome, novoFuncionario.Salario, novoFuncionario.Departamento, novoFuncionario.Projeto1, novoFuncionario.Projeto2);
+                        _connection.AdicionarFuncionario(novoFuncionario);
                         listaFuncionarios.Clear();
-                        listaFuncionarios = new ObservableCollection<FuncionarioModel>(_funcionarioService.ListarFuncionarios());
+                        listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
                         Notifica(nameof(listaFuncionarios));
                         MessageBox.Show("Funcionário inserido");
                     }
@@ -78,13 +79,13 @@ namespace Modelo_Empresa.ViewModels
 
             RemoverFuncionario = new RelayCommand((object _) =>
             {
-                if (SelectedFuncionario != null)
+                if (FuncionarioSelecionado != null)
                 {
                     try
                     {
-                        _funcionarioService.RemoverFuncionario(SelectedFuncionario);
+                        _connection.RemoverFuncionario(FuncionarioSelecionado);
                         listaFuncionarios.Clear();
-                        listaFuncionarios = new ObservableCollection<FuncionarioModel>(_funcionarioService.ListarFuncionarios());
+                        listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
                         Notifica(nameof(listaFuncionarios));
                         MessageBox.Show("Funcionário excluído!!");
                     }
@@ -99,15 +100,15 @@ namespace Modelo_Empresa.ViewModels
             AtualizarFuncionario = new RelayCommand((object _) =>
             {
                 FuncionarioV projetoWindow = new FuncionarioV();
-                projetoWindow.DataContext = SelectedFuncionario;
+                projetoWindow.DataContext = FuncionarioSelecionado;
                 bool? resultadoDialog = projetoWindow.ShowDialog();
                 if (resultadoDialog.HasValue && resultadoDialog.Value == true)
                 {
                     try
                     {
-                        _funcionarioService.AtualizarFuncionario(SelectedFuncionario);
+                        _connection.AtualizarFuncionario(FuncionarioSelecionado);
                         listaFuncionarios.Clear();
-                        listaFuncionarios = new ObservableCollection<FuncionarioModel>(_funcionarioService.ListarFuncionarios());
+                        listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
                         Notifica(nameof(listaFuncionarios));
                         MessageBox.Show("Funcionário atualizado!");
                     }
@@ -133,9 +134,9 @@ namespace Modelo_Empresa.ViewModels
                 {
                     try
                     {
-                        _projetoService.AdicionarProjeto(novoProjeto.Nome, novoProjeto.DataInicio, novoProjeto.DataFim, novoProjeto.Observacao);
+                        _connection.AdicionarProjeto(novoProjeto);
                         listaProjetos.Clear();
-                        listaProjetos = new ObservableCollection<ProjetoModel>(_projetoService.ObterTodos());
+                        listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
                         Notifica(nameof(listaProjetos));
                         MessageBox.Show("Projeto inserido");
                     }
@@ -149,13 +150,13 @@ namespace Modelo_Empresa.ViewModels
 
             RemoverProjeto = new RelayCommand((object _) =>
             {
-                if (SelectedProjeto != null)
+                if (ProjetoSelecionado != null)
                 {
                     try
                     {
-                        _projetoService.RemoverProjeto(SelectedProjeto);
+                        _connection.RemoverProjeto(ProjetoSelecionado);
                         listaProjetos.Clear();
-                        listaProjetos = new ObservableCollection<ProjetoModel>(_projetoService.ObterTodos());
+                        listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
                         Notifica(nameof(listaProjetos));
                         MessageBox.Show("Projeto excluído!!");
                     }
@@ -170,15 +171,15 @@ namespace Modelo_Empresa.ViewModels
             AtualizarProjeto = new RelayCommand((object _) =>
             {
                 ProjetoV projetoWindow = new ProjetoV();
-                projetoWindow.DataContext = SelectedProjeto;
+                projetoWindow.DataContext = ProjetoSelecionado;
                 bool? resultadoDialog = projetoWindow.ShowDialog();
                 if (resultadoDialog.HasValue && resultadoDialog.Value == true)
                 {
                     try
                     {
-                        _projetoService.AtualizarProjeto(SelectedProjeto);
+                        _connection.AtualizarProjeto(ProjetoSelecionado);
                         listaProjetos.Clear();
-                        listaProjetos = new ObservableCollection<ProjetoModel>(_projetoService.ObterTodos());
+                        listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
                         Notifica(nameof(listaProjetos));
                         MessageBox.Show("Projeto atualizado!");
                     }
@@ -206,7 +207,7 @@ namespace Modelo_Empresa.ViewModels
         private void CarregarDadosFuncionarios()
         {
 
-            var dados = _funcionarioService.ListarFuncionarios();
+            var dados = _connection.ListarFuncionarios();
             foreach (var dado in dados)
             {
                 listaFuncionarios.Add(dado);

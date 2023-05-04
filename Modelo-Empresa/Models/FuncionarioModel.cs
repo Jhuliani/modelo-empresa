@@ -9,6 +9,7 @@ namespace Modelo_Empresa.Models
 {    
     public class FuncionarioModel
     {
+        private string _cpf;
         private string _nome;
         private int _salario;
         private string _departamento;
@@ -20,8 +21,9 @@ namespace Modelo_Empresa.Models
 
         }
 
-        public FuncionarioModel(string nome, int salario, string depto, string proj1, string proj2)
+        public FuncionarioModel(string cpf, string nome, int salario, string depto, string proj1, string proj2)
         {
+            _cpf = _cpf;
             _nome = nome;
             _salario = salario;
             _departamento = depto;
@@ -29,7 +31,13 @@ namespace Modelo_Empresa.Models
             _projeto1 = proj2;
         }
 
-        [Key]
+        
+        public string Cpf
+        {
+            get { return _cpf; }
+            set { _cpf = value; }
+        }
+
         public string Nome
         {
             get { return _nome; }
