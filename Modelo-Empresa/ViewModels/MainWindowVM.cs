@@ -28,22 +28,10 @@ namespace Modelo_Empresa.ViewModels
         public ICommand AtualizarProjeto { get; private set; }
 
 
-       // public FuncionarioModel FuncionarioSelecionado { get; set; }
+        public FuncionarioModel FuncionarioSelecionado { get; set; }
         public ProjetoModel ProjetoSelecionado { get; set; }
 
-        private FuncionarioModel _funcionarioSelecionado;
-        public FuncionarioModel FuncionarioSelecionado
-        {
-            get { return _funcionarioSelecionado; }
-            set
-            {
-                _funcionarioSelecionado = value;
-                Notifica(nameof(FuncionarioSelecionado));
-                OnFuncionarioSelecionado();
-            }
-        }
-
-
+       
         public MainWindowVM()
         {
             _connection = new PostgresDb();
@@ -56,18 +44,6 @@ namespace Modelo_Empresa.ViewModels
             CarregarDadosFuncionarios();
         }
 
-
-        public void OnFuncionarioSelecionado()
-        {
-            if (FuncionarioSelecionado != null)
-            {
-                Nome = FuncionarioSelecionado.Nome;
-                Salario = FuncionarioSelecionado.Salario;
-                Departamento = FuncionarioSelecionado.Departamento;
-                Projeto1 = FuncionarioSelecionado.Projeto1;
-                Projeto2 = FuncionarioSelecionado.Projeto2;
-            }
-        }
 
         public void InicializarFuncionarioCommands()
         {

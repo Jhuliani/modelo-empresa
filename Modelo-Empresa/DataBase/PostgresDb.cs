@@ -53,12 +53,14 @@ namespace Modelo_Empresa.DataBase
         {
             try
             {
-                string sql = $"DELETE FROM Funcionario WHERE cpf = {funcionario.Cpf}";
+                string sql = "DELETE FROM Funcionario WHERE cpf = @cpf";
+
                 using NpgsqlCommand command = new NpgsqlCommand(sql, _connection);
-                {
-                    command.ExecuteNonQuery();
-                }
-                return true;
+                command.Parameters.AddWithValue("@cpf", funcionario.Cpf);
+
+                int result = command.ExecuteNonQuery();
+
+                return result > 0;
             }
             catch (Exception ex)
             {
@@ -177,12 +179,12 @@ namespace Modelo_Empresa.DataBase
             try
             {
                 string sql = @"UPDATE projeto SET 
-                       nome = @Nome, data_inicio = @DataInicio, data_fim = @DataFim,
+                        data_inicio = @DataInicio, data_fim = @DataFim,
                        observacao = @Observacao WHERE nome = @Nome";
 
                 using NpgsqlCommand command = new NpgsqlCommand(sql, _connection);
 
-                command.Parameters.AddWithValue("@Nome", projeto.Nome);
+                command.Parameters.AddWithValue("@novoNome", projeto.Nome);
                 command.Parameters.AddWithValue("@DataInicio", projeto.DataInicio);
                 command.Parameters.AddWithValue("@DataFim", projeto.DataFim);
                 command.Parameters.AddWithValue("@Observacao", projeto.Observacao);

@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="FuncionarioV" Height="450" Width="800">
     <Grid>
-        <ListView ItemsSource="{Binding listaFuncionarios}" SelectedValue="{Binding FuncionarioSelecionado}" SelectionChanged="{Binding FuncionarioSelecionadoCommand}" Margin="57,47,57,217">
+        <ListView ItemsSource="{Binding listaFuncionarios}" SelectedValue="{Binding FuncionarioSelecionado}" Margin="57,47,57,217">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Nome Funcionario" DisplayMemberBinding="{Binding Nome}"/>
