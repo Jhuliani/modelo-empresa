@@ -19,7 +19,7 @@ namespace Modelo_Empresa.ViewModels
 {
      class MainWindowVM : INotifyPropertyChanged
      {
-        private readonly IDataBase _connection; 
+        private  IDataBase _connection; 
 
         public ObservableCollection<FuncionarioModel> listaFuncionarios { get; set; }
         public ObservableCollection<ProjetoModel> listaProjetos { get; set; }
@@ -37,13 +37,13 @@ namespace Modelo_Empresa.ViewModels
         public FuncionarioModel FuncionarioSelecionado { get; set; }
         public ProjetoModel ProjetoSelecionado { get; set; }
 
-        readonly DbConnection dbConnection = new NpgsqlConnection(ConfigurationReader.GetConnectionString("MyConnectionString"));
+        private DbConnection dbConnection = new NpgsqlConnection(ConfigurationReader.GetConnectionString("MyConnectionString"));
 
         public MainWindowVM()
         {
-            listaFuncionarios = new ObservableCollection<FuncionarioModel>();
-            listaProjetos = new ObservableCollection<ProjetoModel>();
             _connection = new PostgresDb(dbConnection);
+            listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
+            listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());            
             AbrirProjetosCommand = new RelayCommand(AbrirProjetos);
             AbrirFuncionariosCommand = new RelayCommand(AbrirFuncionarios);
             InicializarFuncionarioCommands();

@@ -92,7 +92,7 @@ namespace Modelo_Empresa.DataBase
 
         }
 
-        public IEnumerable<FuncionarioModel> ListarFuncionarios()
+        public List<FuncionarioModel> ListarFuncionarios()
         {
             string commandText = "SELECT * FROM Funcionario";
             List<FuncionarioModel> funcionarios = new List<FuncionarioModel>();
@@ -195,7 +195,7 @@ namespace Modelo_Empresa.DataBase
             }
         }
 
-        public IEnumerable<ProjetoModel> ListarProjetos()
+        public List<ProjetoModel> ListarProjetos()
         {
             try
             {
