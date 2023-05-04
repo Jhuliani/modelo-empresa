@@ -25,6 +25,7 @@ namespace Modelo_Empresa.Views
         public ProjetoV()
         {
             InitializeComponent();
+            DataContext = new MainWindowVM();
 
         }
     }

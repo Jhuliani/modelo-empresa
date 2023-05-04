@@ -10,8 +10,7 @@ namespace Modelo_Empresa.DataBase
     public class DatabaseManager
     {
         private readonly NpgsqlConnection _connection;
-        readonly string connectionString = ConfigurationReader.GetConnectionString("MyConnectionString");
-
+        
         public void CreateTableIfNotExistsFuncionario()
         {
             var sql = $"CREATE TABLE IF NOT EXISTS FuncionarioModel" +

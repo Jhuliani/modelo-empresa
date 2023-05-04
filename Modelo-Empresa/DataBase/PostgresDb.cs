@@ -12,10 +12,11 @@ namespace Modelo_Empresa.DataBase
     public class PostgresDb : IDataBase
     {
         private readonly NpgsqlConnection _connection;
-        readonly string connectionString = ConfigurationReader.GetConnectionString("MyConnectionString");
+        private string connectionString = "Host=localhost; Port=5432; Username=postgres; password=030395; Database=Empresa-Luz";
+        //readonly string connectionString = ConfigurationReader.GetConnectionString("MyConnectionString");
 
 
-        public PostgresDb(DbConnection connec)
+        public PostgresDb()
         {
             _connection = new NpgsqlConnection(connectionString);
             _connection.Open();
@@ -212,8 +213,8 @@ namespace Modelo_Empresa.DataBase
                             ProjetoModel projeto = new ProjetoModel();
 
                             projeto.Nome = reader["nome"].ToString();
-                            projeto.DataInicio = Convert.ToDateTime(reader["data_inicio"]);
-                            projeto.DataFim = Convert.ToDateTime(reader["data_fim"]);
+                            projeto.DataInicio = Convert.ToDateTime(reader["dataInicio"]);
+                            projeto.DataFim = Convert.ToDateTime(reader["dataFim"]);
                             projeto.Observacao = reader["observacao"].ToString();
 
                             projetos.Add(projeto);

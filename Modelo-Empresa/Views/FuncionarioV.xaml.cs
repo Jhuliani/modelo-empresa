@@ -25,6 +25,8 @@ namespace Modelo_Empresa.Views
         public FuncionarioV()
         {
             InitializeComponent();
+            DataContext = new MainWindowVM();
+
         }
     }
 }
