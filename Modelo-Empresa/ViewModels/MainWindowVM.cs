@@ -54,7 +54,7 @@ namespace Modelo_Empresa.ViewModels
                 try
                 {
                     _connection.AdicionarFuncionario(novoFuncionario);
-                    listaFuncionarios.Clear();
+                   // listaFuncionarios.Clear();
                     listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
                     Notifica(nameof(listaFuncionarios));
                     MessageBox.Show("Funcionário inserido");

@@ -27,17 +27,18 @@ namespace Modelo_Empresa.DataBase
         {
             try
             {
-                string sql = @"INSERT INTO Funcionario (nomefunc,cpf, salario, departamento, projeto1, projeto2)
-                          VALUES (@Nome, @Cpf, @Salario, @Departamento, @Projeto1, @Projeto2)";
+                string sql = @"INSERT INTO Funcionario (cpf, nomefunc, salario, departamento, projeto1, projeto2)
+                          VALUES (@cpf, @nomefunc, @salario, @departamento, @projeto1, @projeto2)";
 
                 using NpgsqlCommand command = new NpgsqlCommand(sql, _connection);
 
-                command.Parameters.AddWithValue("@Nome", funcionario.Nome);
-                command.Parameters.AddWithValue("@Cpf", funcionario.Cpf);
-                command.Parameters.AddWithValue("@Salario", funcionario.Salario);
-                command.Parameters.AddWithValue("@Departamento", funcionario.Departamento);
-                command.Parameters.AddWithValue("@Projeto1", funcionario.Projeto1);
-                command.Parameters.AddWithValue("@Projeto2", funcionario.Projeto2);
+
+                command.Parameters.AddWithValue("cpf", funcionario.Cpf);
+                command.Parameters.AddWithValue("nomefunc", funcionario.Nome);
+                command.Parameters.AddWithValue("salario", funcionario.Salario);
+                command.Parameters.AddWithValue("departamento", funcionario.Departamento);
+                command.Parameters.AddWithValue("projeto1", funcionario.Projeto1);
+                command.Parameters.AddWithValue("Projeto2", funcionario.Projeto2);
 
                 var result = command.ExecuteNonQuery();
 
@@ -71,14 +72,14 @@ namespace Modelo_Empresa.DataBase
         public bool AtualizarFuncionario(FuncionarioModel funcionario)
         {
             string sql = @"UPDATE Funcionario
-                   SET nomefunc = @NovoNome, salario = @Salario, departamento = @Departamento, projeto1 = @Projeto1, projeto2 = @Projeto2 
-                   WHERE cpf = @Cpf";
+                   SET nomefunc = @nomefunc, salario = @salario, departamento = @departamento, projeto1 = @projeto1, projeto2 = @projeto2 
+                   WHERE cpf = @cpf";
 
             try
             {
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, _connection))
                 {
-                    command.Parameters.AddWithValue("nome", funcionario.Nome);
+                    command.Parameters.AddWithValue("nomefunc", funcionario.Nome);
                     command.Parameters.AddWithValue("cpf", funcionario.Cpf);
                     command.Parameters.AddWithValue("salario", funcionario.Salario);
                     command.Parameters.AddWithValue("departamento", funcionario.Departamento);
@@ -134,15 +135,15 @@ namespace Modelo_Empresa.DataBase
         {
             try
             {
-                string sql = @"INSERT INTO Projeto (nomeprojeto, datainicio, datafim, observacao)
-                      VALUES (@NomeProjeto, @DataInicio, @DataFim, @Observacao)";
+                string sql = @"INSERT INTO Projeto (nome, dataInicio, dataFim, observacao)
+                      VALUES (@nome, @dataInicio, @dataFim, @observacao)";
 
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, _connection))
                 {
-                    command.Parameters.AddWithValue("@NomeProjeto", projeto.Nome);
-                    command.Parameters.AddWithValue("@DataInicio", projeto.DataInicio);
-                    command.Parameters.AddWithValue("@DataFim", projeto.DataFim);
-                    command.Parameters.AddWithValue("@Observacao", projeto.Observacao);
+                    command.Parameters.AddWithValue("nome", projeto.Nome);
+                    command.Parameters.AddWithValue("dataInicio", projeto.DataInicio);
+                    command.Parameters.AddWithValue("dataFim", projeto.DataFim);
+                    command.Parameters.AddWithValue("observacao", projeto.Observacao);
 
                     var result = command.ExecuteNonQuery();
 
@@ -162,7 +163,7 @@ namespace Modelo_Empresa.DataBase
                 string sql = "DELETE FROM projeto WHERE nome = @nome";
 
                 using NpgsqlCommand command = new NpgsqlCommand(sql, _connection);
-                command.Parameters.AddWithValue("@nome", projeto.Nome);
+                command.Parameters.AddWithValue("nome", projeto.Nome);
 
                 int result = command.ExecuteNonQuery();
 
@@ -179,15 +180,15 @@ namespace Modelo_Empresa.DataBase
             try
             {
                 string sql = @"UPDATE projeto SET 
-                        data_inicio = @DataInicio, data_fim = @DataFim,
-                       observacao = @Observacao WHERE nome = @Nome";
+                        dataIinicio = @dataInicio, dataFim = @dataFim,
+                       observacao = @observacao WHERE nome = @nome";
 
                 using NpgsqlCommand command = new NpgsqlCommand(sql, _connection);
 
-                command.Parameters.AddWithValue("@novoNome", projeto.Nome);
-                command.Parameters.AddWithValue("@DataInicio", projeto.DataInicio);
-                command.Parameters.AddWithValue("@DataFim", projeto.DataFim);
-                command.Parameters.AddWithValue("@Observacao", projeto.Observacao);
+                command.Parameters.AddWithValue("novoNome", projeto.Nome);
+                command.Parameters.AddWithValue("DataInicio", projeto.DataInicio);
+                command.Parameters.AddWithValue("DataFim", projeto.DataFim);
+                command.Parameters.AddWithValue("Observacao", projeto.Observacao);
                 int result = command.ExecuteNonQuery();
 
                 return result > 0;
