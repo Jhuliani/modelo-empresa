@@ -5,29 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Modelo_Empresa.Views"
         mc:Ignorable="d"
-        Title="ProjetoV" Height="450" Width="800">
+        Title="ProjetoV" Height="250" Width="800">
     <Grid>
-        <ListView ItemsSource="{Binding listaProjetos}" SelectedValue="{Binding ProjetoSelecionado}" Margin="57,47,57,217">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Nome Projeto" DisplayMemberBinding="{Binding Nome}"/>
-                    <GridViewColumn Header="Data início" DisplayMemberBinding="{Binding DataInicio}"/>
-                    <GridViewColumn Header="Data fim" DisplayMemberBinding="{Binding DataFim}"/>
-                    <GridViewColumn Header="Observação" DisplayMemberBinding="{Binding Observacao}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button Content="Adicionar" Command="{Binding AdicionarProjeto}" HorizontalAlignment="Left" Margin="57,366,0,0" VerticalAlignment="Top" Height="31" Width="86"/>
-        <Button Content="Atualizar" Command="{Binding AtualizarProjeto}" HorizontalAlignment="Center" Margin="0,366,0,0" VerticalAlignment="Top" Height="31" Width="86"/>
-        <Button Content="Remover" Command="{Binding RemoverProjeto}" HorizontalAlignment="Left" Margin="657,366,0,0" VerticalAlignment="Top" Height="31" Width="86"/>
-        <TextBox HorizontalAlignment="Left" Margin="116,252,0,0" TextWrapping="Wrap" Text="{Binding Nome}" VerticalAlignment="Top" Width="380"/>
-        <Label Content="Nome" HorizontalAlignment="Left" Margin="57,248,0,0" VerticalAlignment="Top"/>
-        <Label Content="Data início" HorizontalAlignment="Left" Margin="519,248,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="608,252,0,0" TextWrapping="Wrap" Text="{Binding DataInicio}" VerticalAlignment="Top" Width="135"/>
-        <Label Content="Data fim" HorizontalAlignment="Left" Margin="57,290,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="135,294,0,0" TextWrapping="Wrap" Text="{Binding DataFim}" VerticalAlignment="Top" Width="110"/>
-        <Label Content="Observação1" HorizontalAlignment="Left" Margin="297,290,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="400,294,0,0" TextWrapping="Wrap" Text="{Binding Observacao}" VerticalAlignment="Top" Width="343"/>
+        <Button Content="Salvar" HorizontalAlignment="Left" Margin="657,154,0,0" VerticalAlignment="Top" Height="31" Width="86" Click="Button_Click"/>
+        <TextBox HorizontalAlignment="Left" Margin="105,50,0,0" TextWrapping="Wrap" Text="{Binding Nome}" VerticalAlignment="Top" Width="380"/>
+        <Label Content="Nome" HorizontalAlignment="Left" Margin="57,42,0,0" VerticalAlignment="Top"/>
+        <Label Content="Data início" HorizontalAlignment="Left" Margin="505,42,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="608,50,0,0" TextWrapping="Wrap" Text="{Binding DataInicio}" VerticalAlignment="Top" Width="135"/>
+        <Label Content="Data fim" HorizontalAlignment="Left" Margin="57,90,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="129,94,0,0" TextWrapping="Wrap" Text="{Binding DataFim}" VerticalAlignment="Top" Width="110"/>
+        <Label Content="Observação1" HorizontalAlignment="Left" Margin="295,90,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="400,94,0,0" TextWrapping="Wrap" Text="{Binding Observacao}" VerticalAlignment="Top" Width="343"/>
 
     </Grid>
 </Window>

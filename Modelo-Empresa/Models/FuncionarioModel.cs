@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Modelo_Empresa.Models
 {    
-    public class FuncionarioModel
+    public class FuncionarioModel 
     {
         private string _cpf;
         private string _nome;

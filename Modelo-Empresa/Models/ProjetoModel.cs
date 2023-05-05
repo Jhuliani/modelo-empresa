@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Modelo_Empresa.Models
 {
-    public class ProjetoModel
+    public class ProjetoModel 
     {
         private string _nome;
         private DateTime _dataInicio;

@@ -15,18 +15,13 @@ namespace Modelo_Empresa.ViewModels
     {
         private IDataBase _connection;
 
+        public Opcoes OpcaoSelecionada { get; set; }
         public ObservableCollection<FuncionarioModel> listaFuncionarios { get; set; }
         public ObservableCollection<ProjetoModel> listaProjetos { get; set; }
 
-        public ICommand AdicionarFuncionario { get; private set; }
-        public ICommand RemoverFuncionario { get; private set; }
-        public ICommand AtualizarFuncionario { get; private set; }
-        public ICommand AbrirFuncionariosCommand { get; private set; }
-        public ICommand AbrirProjetosCommand { get; private set; }
-        public ICommand AdicionarProjeto { get; private set; }
-        public ICommand RemoverProjeto { get; private set; }
-        public ICommand AtualizarProjeto { get; private set; }
-
+        public ICommand Adicionar { get; private set; }
+        public ICommand Remover { get; private set; }
+        public ICommand Atualizar { get; private set; }
 
         public FuncionarioModel FuncionarioSelecionado { get; set; }
         public ProjetoModel ProjetoSelecionado { get; set; }
@@ -37,160 +32,162 @@ namespace Modelo_Empresa.ViewModels
             _connection = new PostgresDb();
             listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
             listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
-            AbrirProjetosCommand = new RelayCommand(AbrirProjetos);
-            AbrirFuncionariosCommand = new RelayCommand(AbrirFuncionarios);
-            InicializarFuncionarioCommands();
-            InicializarProjetosCommands();
-            CarregarDadosFuncionarios();
+            InicializarCommands();
         }
 
 
-        public void InicializarFuncionarioCommands()
+        public void InicializarCommands()
         {
-            AdicionarFuncionario = new RelayCommand((object _) =>
+            if (OpcaoSelecionada == (Opcoes)1 )
             {
-                FuncionarioModel novoFuncionario = new FuncionarioModel();
-
-                try
+                Adicionar = new RelayCommand((object _) =>
                 {
-                    _connection.AdicionarFuncionario(novoFuncionario);
-                   // listaFuncionarios.Clear();
-                    listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
-                    Notifica(nameof(listaFuncionarios));
-                    MessageBox.Show("Funcionário inserido");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao inserir Funcionário \n"
-                    + ex.Message);
-                }
-
-            });
-
-            RemoverFuncionario = new RelayCommand((object _) =>
-            {
-                if (FuncionarioSelecionado != null)
-                {
-                    try
+                    FuncionarioModel novoFuncionario = new FuncionarioModel();
+                    FuncionarioV projetoWindow = new FuncionarioV();
+                    projetoWindow.DataContext = novoFuncionario;
+                    bool? resultadoDialog = projetoWindow.ShowDialog();
+                    if (resultadoDialog.HasValue && resultadoDialog.Value == true)
                     {
-                        _connection.RemoverFuncionario(FuncionarioSelecionado);
-                        listaFuncionarios.Clear();
-                        listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
-                        Notifica(nameof(listaFuncionarios));
-                        MessageBox.Show("Funcionário excluído!!");
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show("Erro ao deletar Funcionário \n"
+                        try
+                        {
+                            _connection.AdicionarFuncionario(novoFuncionario);
+                            listaFuncionarios.Clear();
+                            listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
+                            Notifica(nameof(listaFuncionarios));
+                            MessageBox.Show("Funcionário inserido");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao inserir Funcionário \n"
                             + ex.Message);
-                    }
-                }
-            });
+                        }
+                    }                   
 
-            AtualizarFuncionario = new RelayCommand((object _) =>
-            {
-                try
+                });
+
+                Remover = new RelayCommand((object _) =>
                 {
-                    _connection.AtualizarFuncionario(FuncionarioSelecionado);
-                    listaFuncionarios.Clear();
-                    listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
-                    Notifica(nameof(listaFuncionarios));
-                    MessageBox.Show("Funcionário atualizado!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao atualizar Funcionário \n"
-                        + ex.Message);
-                }
-
-
-            });
-        }
-
-
-        public void InicializarProjetosCommands()
-        {
-            AdicionarProjeto = new RelayCommand((object _) =>
-            {
-                ProjetoModel novoProjeto = new ProjetoModel();
-                try
-                {
-                    _connection.AdicionarProjeto(novoProjeto);
-                    listaProjetos.Clear();
-                    listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
-                    Notifica(nameof(listaProjetos));
-                    MessageBox.Show("Projeto inserido");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao inserir Projeto \n"
-                    + ex.Message);
-                }
-
-            });
-
-            RemoverProjeto = new RelayCommand((object _) =>
-            {
-                if (ProjetoSelecionado != null)
-                {
-                    try
+                    if (FuncionarioSelecionado != null)
                     {
-                        _connection.RemoverProjeto(ProjetoSelecionado);
-                        listaProjetos.Clear();
-                        listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
-                        Notifica(nameof(listaProjetos));
-                        MessageBox.Show("Projeto excluído!!");
+                        try
+                        {
+                            _connection.RemoverFuncionario(FuncionarioSelecionado);
+                            listaFuncionarios.Clear();
+                            listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
+                            Notifica(nameof(listaFuncionarios));
+                            MessageBox.Show("Funcionário excluído!!");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao deletar Funcionário \n"
+                                + ex.Message);
+                        }
                     }
-                    catch (Exception ex)
+                });
+
+                Atualizar = new RelayCommand((object _) =>
+                {
+                    FuncionarioV projetoWindow = new FuncionarioV();
+                    projetoWindow.DataContext = FuncionarioSelecionado;
+                    bool? resultadoDialog = projetoWindow.ShowDialog();
+                    if (resultadoDialog.HasValue && resultadoDialog.Value == true)
                     {
-                        MessageBox.Show("Erro ao deletar Projeto \n"
-                            + ex.Message);
-                    }
-                }
-            });
+                        try
+                        {
+                            _connection.AtualizarFuncionario(FuncionarioSelecionado);
+                            listaFuncionarios.Clear();
+                            listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
+                            Notifica(nameof(listaFuncionarios));
+                            MessageBox.Show("Funcionário atualizado!");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao atualizar Funcionário \n"
+                                + ex.Message);
+                        }
+                    }                  
 
-            AtualizarProjeto = new RelayCommand((object _) =>
-            {
-
-                try
-                {
-                    _connection.AtualizarProjeto(ProjetoSelecionado);
-                    listaProjetos.Clear();
-                    listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
-                    Notifica(nameof(listaProjetos));
-                    MessageBox.Show("Projeto atualizado!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Erro ao atualizar Projeto \n"
-                        + ex.Message);
-                }
-
-            });
-
-        }
-        private void AbrirFuncionarios(object parameter)
-        {
-            FuncionarioV funcionarioWindow = new FuncionarioV();
-            funcionarioWindow.ShowDialog();
-        }
-
-        private void AbrirProjetos(object parameter)
-        {
-            ProjetoV projetoWindow = new ProjetoV();
-            projetoWindow.ShowDialog();
-        }
-
-        private void CarregarDadosFuncionarios()
-        {
-
-            var dados = _connection.ListarFuncionarios();
-            foreach (var dado in dados)
-            {
-                listaFuncionarios.Add(dado);
+                });
             }
+            else if (OpcaoSelecionada == (Opcoes)2)
+            {
+                Adicionar = new RelayCommand((object _) =>
+                {
+                    ProjetoModel novoProjeto = new ProjetoModel();
+                    ProjetoV projetoWindow = new ProjetoV();
+                    projetoWindow.DataContext = novoProjeto;
+                    bool? resultadoDialog = projetoWindow.ShowDialog();
+                    if (resultadoDialog.HasValue && resultadoDialog.Value == true)
+                    {
+                        try
+                        {
+                            _connection.AdicionarProjeto(novoProjeto);
+                            listaProjetos.Clear();
+                            listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
+                            Notifica(nameof(listaProjetos));
+                            MessageBox.Show("Projeto inserido");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao inserir Projeto \n"
+                            + ex.Message);
+                        }
+                    }                    
 
+                });
+
+                Remover = new RelayCommand((object _) =>
+                {
+                    if (ProjetoSelecionado != null)
+                    {
+                        try
+                        {
+                            _connection.RemoverProjeto(ProjetoSelecionado);
+                            listaProjetos.Clear();
+                            listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
+                            Notifica(nameof(listaProjetos));
+                            MessageBox.Show("Projeto excluído!!");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao deletar Projeto \n"
+                                + ex.Message);
+                        }
+                    }
+                });
+
+                Atualizar = new RelayCommand((object _) =>
+                {
+                    ProjetoV projetoWindow = new ProjetoV();
+                    projetoWindow.DataContext = ProjetoSelecionado;
+                    bool? resultadoDialog = projetoWindow.ShowDialog();
+                    if (resultadoDialog.HasValue && resultadoDialog.Value == true)
+                    {
+                        try
+                        {
+                            _connection.AtualizarProjeto(ProjetoSelecionado);
+                            listaProjetos.Clear();
+                            listaProjetos = new ObservableCollection<ProjetoModel>(_connection.ListarProjetos());
+                            Notifica(nameof(listaProjetos));
+                            MessageBox.Show("Projeto atualizado!");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao atualizar Projeto \n"
+                                + ex.Message);
+                        }
+                    }                    
+
+                });
+            }
+            else
+            {
+              //  desabilitar botoes
+            }
         }
+
+
+       
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void Notifica(String propertyName)
