@@ -13,7 +13,6 @@ namespace Modelo_Empresa.DataBase
     {
         private readonly NpgsqlConnection _connection;
         private string connectionString = "Host=localhost; Port=5432; Username=postgres; password=030395; Database=Empresa-Luz";
-        //readonly string connectionString = ConfigurationReader.GetConnectionString("MyConnectionString");
 
 
         public PostgresDb()
