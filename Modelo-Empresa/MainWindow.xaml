@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Modelo_Empresa"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="1000">
-           
+
     <Grid>
 
         <ListView ItemsSource="{Binding listaFuncionarios}" SelectedValue="{Binding FuncionarioSelecionado}" Margin="21,47,528,225">
@@ -32,9 +32,9 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Remover" Command="{Binding Remover}" IsEnabled="{Binding BotaoHabilitado}" HorizontalAlignment="Left" Margin="724,453,0,0" VerticalAlignment="Top" Height="41" Width="100"/>
-        <Button Content="Editar" Command="{Binding Atualizar}" IsEnabled="{Binding BotaoHabilitado}" HorizontalAlignment="Center" Margin="0,458,0,0" VerticalAlignment="Top" Height="41" Width="100"/>
-        <Button Content="Adicionar" Command="{Binding Adicionar}" IsEnabled="{Binding BotaoHabilitado}" HorizontalAlignment="Left" Margin="184,462,0,0" VerticalAlignment="Top" Height="42" Width="100"/>
+        <Button Content="Remover" Command="{Binding Remover}" HorizontalAlignment="Left" Margin="722,448,0,0" VerticalAlignment="Top" Height="41" Width="100"/>
+        <Button Content="Editar" Command="{Binding Atualizar}"  HorizontalAlignment="Center" Margin="0,448,0,0" VerticalAlignment="Top" Height="41" Width="100"/>
+        <Button Content="Adicionar" Command="{Binding Adicionar}" HorizontalAlignment="Left" Margin="167,447,0,0" VerticalAlignment="Top" Height="42" Width="100"/>
 
 
         <ComboBox HorizontalAlignment="Center" ItemsSource="{local:EnumBindingSource local:Opcoes}"
