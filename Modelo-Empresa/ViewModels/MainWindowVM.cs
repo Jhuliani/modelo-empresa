@@ -15,7 +15,6 @@ namespace Modelo_Empresa.ViewModels
     {
         private IDataBase _connection;
 
-        public Opcoes OpcaoSelecionada { get; set; }
         public ObservableCollection<FuncionarioModel> listaFuncionarios { get; set; }
         public ObservableCollection<ProjetoModel> listaProjetos { get; set; }
 
@@ -25,8 +24,9 @@ namespace Modelo_Empresa.ViewModels
 
         public FuncionarioModel FuncionarioSelecionado { get; set; }
         public ProjetoModel ProjetoSelecionado { get; set; }
+        public Opcoes OpcaoSelecionada { get; set; }
 
-       
+
         public MainWindowVM()
         {
             _connection = new PostgresDb();
@@ -38,9 +38,10 @@ namespace Modelo_Empresa.ViewModels
 
         public void InicializarCommands()
         {
-            if (OpcaoSelecionada == (Opcoes)1 )
+
+            Adicionar = new RelayCommand((object _) =>
             {
-                Adicionar = new RelayCommand((object _) =>
+                if (OpcaoSelecionada == Opcoes.Funcionarios)
                 {
                     FuncionarioModel novoFuncionario = new FuncionarioModel();
                     FuncionarioV projetoWindow = new FuncionarioV();
@@ -61,57 +62,9 @@ namespace Modelo_Empresa.ViewModels
                             MessageBox.Show("Erro ao inserir Funcionário \n"
                             + ex.Message);
                         }
-                    }                   
-
-                });
-
-                Remover = new RelayCommand((object _) =>
-                {
-                    if (FuncionarioSelecionado != null)
-                    {
-                        try
-                        {
-                            _connection.RemoverFuncionario(FuncionarioSelecionado);
-                            listaFuncionarios.Clear();
-                            listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
-                            Notifica(nameof(listaFuncionarios));
-                            MessageBox.Show("Funcionário excluído!!");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Erro ao deletar Funcionário \n"
-                                + ex.Message);
-                        }
                     }
-                });
-
-                Atualizar = new RelayCommand((object _) =>
-                {
-                    FuncionarioV projetoWindow = new FuncionarioV();
-                    projetoWindow.DataContext = FuncionarioSelecionado;
-                    bool? resultadoDialog = projetoWindow.ShowDialog();
-                    if (resultadoDialog.HasValue && resultadoDialog.Value == true)
-                    {
-                        try
-                        {
-                            _connection.AtualizarFuncionario(FuncionarioSelecionado);
-                            listaFuncionarios.Clear();
-                            listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
-                            Notifica(nameof(listaFuncionarios));
-                            MessageBox.Show("Funcionário atualizado!");
-                        }
-                        catch (Exception ex)
-                        {
-                            MessageBox.Show("Erro ao atualizar Funcionário \n"
-                                + ex.Message);
-                        }
-                    }                  
-
-                });
-            }
-            else if (OpcaoSelecionada == (Opcoes)2)
-            {
-                Adicionar = new RelayCommand((object _) =>
+                }
+                else if (OpcaoSelecionada == Opcoes.Projetos)
                 {
                     ProjetoModel novoProjeto = new ProjetoModel();
                     ProjetoV projetoWindow = new ProjetoV();
@@ -132,11 +85,33 @@ namespace Modelo_Empresa.ViewModels
                             MessageBox.Show("Erro ao inserir Projeto \n"
                             + ex.Message);
                         }
-                    }                    
+                    }
+                }
 
-                });
+            }, (object _) => OpcaoSelecionada == Opcoes.Funcionarios || OpcaoSelecionada == Opcoes.Projetos);
 
-                Remover = new RelayCommand((object _) =>
+            Remover = new RelayCommand((object _) =>
+            {
+                if (OpcaoSelecionada == Opcoes.Funcionarios)
+                {
+                    if (FuncionarioSelecionado != null)
+                    {
+                        try
+                        {
+                            _connection.RemoverFuncionario(FuncionarioSelecionado);
+                            listaFuncionarios.Clear();
+                            listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
+                            Notifica(nameof(listaFuncionarios));
+                            MessageBox.Show("Funcionário excluído!!");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao deletar Funcionário \n"
+                                + ex.Message);
+                        }
+                    }
+                }
+                else if (OpcaoSelecionada == Opcoes.Projetos)
                 {
                     if (ProjetoSelecionado != null)
                     {
@@ -154,9 +129,35 @@ namespace Modelo_Empresa.ViewModels
                                 + ex.Message);
                         }
                     }
-                });
+                }
 
-                Atualizar = new RelayCommand((object _) =>
+            }, (object _) => OpcaoSelecionada == Opcoes.Funcionarios || OpcaoSelecionada == Opcoes.Projetos);
+
+            Atualizar = new RelayCommand((object _) =>
+            {
+                if (OpcaoSelecionada == Opcoes.Funcionarios)
+                {
+                    FuncionarioV funcionarioWindow = new FuncionarioV();
+                    funcionarioWindow.DataContext = FuncionarioSelecionado;
+                    bool? resultadoDialog = funcionarioWindow.ShowDialog();
+                    if (resultadoDialog.HasValue && resultadoDialog.Value == true)
+                    {
+                        try
+                        {
+                            _connection.AtualizarFuncionario(FuncionarioSelecionado);
+                            listaFuncionarios.Clear();
+                            listaFuncionarios = new ObservableCollection<FuncionarioModel>(_connection.ListarFuncionarios());
+                            Notifica(nameof(listaFuncionarios));
+                            MessageBox.Show("Funcionário atualizado!");
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show("Erro ao atualizar Funcionário \n"
+                                + ex.Message);
+                        }
+                    }
+                }
+                else if (OpcaoSelecionada == Opcoes.Projetos)
                 {
                     ProjetoV projetoWindow = new ProjetoV();
                     projetoWindow.DataContext = ProjetoSelecionado;
@@ -176,18 +177,13 @@ namespace Modelo_Empresa.ViewModels
                             MessageBox.Show("Erro ao atualizar Projeto \n"
                                 + ex.Message);
                         }
-                    }                    
+                    }
+                }
 
-                });
-            }
-            else
-            {
-              //  desabilitar botoes
-            }
+            }, (object _) => OpcaoSelecionada == Opcoes.Funcionarios || OpcaoSelecionada == Opcoes.Projetos);
+
         }
 
-
-       
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void Notifica(String propertyName)

@@ -26,9 +26,7 @@ namespace Modelo_Empresa
         {
             InitializeComponent();
             DataContext = new MainWindowVM();
-
         }
-
-
+       
     }
 }

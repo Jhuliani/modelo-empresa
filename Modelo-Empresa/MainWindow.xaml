@@ -32,12 +32,12 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Content="Remover" Command="{Binding Remover}" HorizontalAlignment="Left" Margin="724,453,0,0" VerticalAlignment="Top" Height="41" Width="100"/>
-        <Button Content="Editar" Command="{Binding Editar}" HorizontalAlignment="Center" Margin="0,458,0,0" VerticalAlignment="Top" Height="41" Width="100"/>
-        <Button Content="Adicionar" Command="{Binding Adicionar}" HorizontalAlignment="Left" Margin="184,462,0,0" VerticalAlignment="Top" Height="42" Width="100"/>
+        <Button Content="Remover" Command="{Binding Remover}" IsEnabled="{Binding BotaoHabilitado}" HorizontalAlignment="Left" Margin="724,453,0,0" VerticalAlignment="Top" Height="41" Width="100"/>
+        <Button Content="Editar" Command="{Binding Atualizar}" IsEnabled="{Binding BotaoHabilitado}" HorizontalAlignment="Center" Margin="0,458,0,0" VerticalAlignment="Top" Height="41" Width="100"/>
+        <Button Content="Adicionar" Command="{Binding Adicionar}" IsEnabled="{Binding BotaoHabilitado}" HorizontalAlignment="Left" Margin="184,462,0,0" VerticalAlignment="Top" Height="42" Width="100"/>
 
 
-        <ComboBox HorizontalAlignment="Center" ItemsSource="{Binding Source={local:EnumBindingSource {x:Type local:Opcoes}}}"
+        <ComboBox HorizontalAlignment="Center" ItemsSource="{local:EnumBindingSource local:Opcoes}"
           SelectedItem="{Binding OpcaoSelecionada}" Margin="0,332,0,0" VerticalAlignment="Top" Width="120"/>
 
 
